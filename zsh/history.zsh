@@ -17,7 +17,7 @@ if [ -f "$HOME/.zshrc" ]; then
         cat >> "$HOME/.zshrc" << 'EOF'
 
 # Dotfiles history config
-export HISTFILE="$HISTORY_DIR/.zsh_history"
+export HISTFILE="/commandhistory/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
 setopt SHARE_HISTORY          # Share history between all sessions
