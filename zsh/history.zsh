@@ -14,10 +14,10 @@ if [ -f "$HOME/.zshrc" ]; then
     # Check if history config already exists
     if ! grep -q "# Dotfiles history config" "$HOME/.zshrc" 2>/dev/null; then
         echo "  Configuring persistent shell history..."
-        cat >> "$HOME/.zshrc" << 'EOF'
+        cat >> "$HOME/.zshrc" << EOF
 
 # Dotfiles history config
-export HISTFILE="/commandhistory/.zsh_history"
+export HISTFILE="$HISTORY_DIR/.zsh_history"
 export HISTSIZE=10000
 export SAVEHIST=10000
 setopt SHARE_HISTORY          # Share history between all sessions
