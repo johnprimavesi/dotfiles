@@ -15,13 +15,19 @@ if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" 2>/dev/null || true
 fi
 
+# Install zsh-you-should-use
+if [ ! -d "$ZSH_CUSTOM/plugins/you-should-use" ]; then
+    echo "  Installing zsh-you-should-use..."
+    git clone https://github.com/MichaelAquilina/zsh-you-should-use "$ZSH_CUSTOM/plugins/you-should-use" 2>/dev/null || true
+fi
+
 # Update plugins in .zshrc if not already present
 if [ -f "$HOME/.zshrc" ]; then
-    if ! grep -q "zsh-autosuggestions\|zsh-syntax-highlighting" "$HOME/.zshrc"; then
+    if ! grep -q "zsh-autosuggestions\|zsh-syntax-highlighting\|you-should-use" "$HOME/.zshrc"; then
         echo "  Enabling plugins in .zshrc..."
         # Use sed to add plugins, handling both single-line and multi-line plugin declarations
-        sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc" 2>/dev/null || \
-        sed -i 's/plugins=([^)]*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc" 2>/dev/null || true
+        sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use)/' "$HOME/.zshrc" 2>/dev/null || \
+        sed -i 's/plugins=([^)]*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use)/' "$HOME/.zshrc" 2>/dev/null || true
     fi
 fi
 
