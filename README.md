@@ -11,33 +11,41 @@ Personal development environment configurations for Cursor/VS Code devcontainers
 
 ## Setup
 
-### 1. Create the Repository
+### Option 1: Use This Repository As-Is
 
-1. Create a new GitHub repository (e.g., `yourusername/dotfiles`)
-2. Clone it locally
-3. Add the files from this plan
+Simply configure Cursor/VS Code to use this repository directly.
 
-### 2. Configure Cursor/VS Code
+### Option 2: Fork and Customise
+
+1. Fork this repository on GitHub (click the "Fork" button)
+2. Customise the configuration files as needed
+3. Use your forked repository URL in the configuration below, make sure it's public.
+
+### Configure Cursor/VS Code
 
 Add to your Cursor/VS Code **User Settings** (not workspace settings):
 
 **Via Settings UI:**
 - Open Settings (`Ctrl+,` or `Cmd+,`)
 - Search for "dotfiles"
-- Set "Dotfiles: Repository" to your GitHub repo URL (e.g., `yourusername/dotfiles`)
+- Set "Dotfiles: Repository" to either:
+  - `johnprimavesi/dotfiles` (to use this repo as-is), or
+  - `yourusername/dotfiles` (if you forked it)
 - Set "Dotfiles: Target Path" to `~/dotfiles`
 - Set "Dotfiles: Install Command" to `install.sh`
 
 **Via settings.json:**
 ```json
 {
-    "dotfiles.repository": "yourusername/dotfiles",
+    "dotfiles.repository": "johnprimavesi/dotfiles",
     "dotfiles.targetPath": "~/dotfiles",
     "dotfiles.installCommand": "install.sh"
 }
 ```
 
-### 3. Configure Devcontainer for History Persistence
+(Replace `johnprimavesi/dotfiles` with your forked repository if you chose Option 2)
+
+### 2. Configure Devcontainer for History Persistence
 
 In your project's `.devcontainer/docker-compose.yml`, add a volume mount for history:
 
@@ -60,7 +68,7 @@ services:
       - ~/.local/share/devcontainer-history:/commandhistory
 ```
 
-### 4. Rebuild Devcontainer
+### 3. Rebuild Devcontainer
 
 After configuring:
 1. Rebuild your devcontainer (`Dev Containers: Rebuild Container`)
