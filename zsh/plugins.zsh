@@ -29,5 +29,9 @@ if [ -f "$HOME/.zshrc" ]; then
         sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use)/' "$HOME/.zshrc" 2>/dev/null || \
         sed -i 's/plugins=([^)]*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use)/' "$HOME/.zshrc" 2>/dev/null || true
     fi
+    
+    # Set theme to robbyrussell (clean prompt without username or $)
+    echo "  Setting theme to robbyrussell..."
+    sed -i 's/^ZSH_THEME=.*/ZSH_THEME="robbyrussell"/' "$HOME/.zshrc" 2>/dev/null || true
 fi
 
