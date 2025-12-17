@@ -1,5 +1,5 @@
 # Customise git prompt (remove "git:" prefix)
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[blue]%}(%{$fg[red]%}"
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[blue]%}(%{$fg[red]%} "
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 
 # Personal aliases
