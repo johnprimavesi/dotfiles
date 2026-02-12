@@ -45,7 +45,7 @@ fi
 # Install Claude Code
 if ! command -v claude &> /dev/null; then
     echo "🤖 Installing Claude Code..."
-    curl -fsSL https://claude.ai/install.sh | bash
+    TERM=dumb CI=true curl -fsSL https://claude.ai/install.sh | TERM=dumb CI=true bash
 else
     echo "🤖 Claude Code already installed"
 fi
