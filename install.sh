@@ -6,6 +6,30 @@ echo "🚀 Installing dotfiles..."
 # Get the directory where this script is located
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Install zsh if not present
+if ! command -v zsh &> /dev/null; then
+    echo "🐚 Installing zsh..."
+    if command -v apt-get &> /dev/null; then
+        sudo apt-get update && sudo apt-get install -y zsh
+    elif command -v yum &> /dev/null; then
+        sudo yum install -y zsh
+    elif command -v apk &> /dev/null; then
+        apk add --no-cache zsh
+    else
+        echo "⚠️  Could not install zsh: unsupported package manager"
+    fi
+else
+    echo "🐚 zsh already installed"
+fi
+
+# Install oh-my-zsh if not present
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "🎨 Installing oh-my-zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    echo "🎨 oh-my-zsh already installed"
+fi
+
 # Install oh-my-zsh plugins
 if [ -d "$HOME/.oh-my-zsh" ]; then
     echo "📦 Installing oh-my-zsh plugins..."
