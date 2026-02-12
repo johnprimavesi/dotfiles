@@ -6,26 +6,51 @@ echo "🚀 Installing dotfiles..."
 # Get the directory where this script is located
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Install zsh if not present
-if ! command -v zsh &> /dev/null; then
-    echo "🐚 Installing zsh..."
-    if command -v apt-get &> /dev/null; then
-        sudo apt-get update && sudo apt-get install -y zsh
-    elif command -v yum &> /dev/null; then
-        sudo yum install -y zsh
-    elif command -v apk &> /dev/null; then
-        apk add --no-cache zsh
+# Helper: run with sudo if available, otherwise run directly (devcontainers often run as root)
+run_pkg() {
+    if command -v sudo &> /dev/null; then
+        sudo "$@"
     else
-        echo "⚠️  Could not install zsh: unsupported package manager"
+        "$@"
     fi
-else
-    echo "🐚 zsh already installed"
-fi
+}
+
+# Install essential tools (curl, git, zsh) if missing
+install_packages() {
+    local packages=()
+    command -v curl &> /dev/null || packages+=(curl)
+    command -v git &> /dev/null || packages+=(git)
+    command -v zsh &> /dev/null || packages+=(zsh)
+
+    if [ ${#packages[@]} -eq 0 ]; then
+        echo "🐚 curl, git, zsh already installed"
+        return
+    fi
+
+    echo "📦 Installing missing packages: ${packages[*]}..."
+    if command -v apt-get &> /dev/null; then
+        run_pkg apt-get update && run_pkg apt-get install -y "${packages[@]}"
+    elif command -v yum &> /dev/null; then
+        run_pkg yum install -y "${packages[@]}"
+    elif command -v apk &> /dev/null; then
+        apk add --no-cache "${packages[@]}"
+    else
+        echo "⚠️  Could not install packages: unsupported package manager"
+    fi
+}
+
+install_packages
 
 # Install oh-my-zsh if not present
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "🎨 Installing oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    if command -v curl &> /dev/null; then
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    elif command -v wget &> /dev/null; then
+        sh -c "$(wget -qO- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    else
+        echo "⚠️  Could not install oh-my-zsh: curl or wget required"
+    fi
 else
     echo "🎨 oh-my-zsh already installed"
 fi
