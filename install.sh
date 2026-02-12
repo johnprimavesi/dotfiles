@@ -18,6 +18,14 @@ if [ -d "$HOME/.oh-my-zsh" ]; then
     "$DOTFILES_DIR/zsh/history.zsh"
 fi
 
+# Install Claude Code
+if ! command -v claude &> /dev/null; then
+    echo "🤖 Installing Claude Code..."
+    curl -fsSL https://claude.ai/install.sh | bash
+else
+    echo "🤖 Claude Code already installed"
+fi
+
 # Link or source custom .zshrc additions
 if [ -f "$DOTFILES_DIR/.zshrc" ]; then
     echo "⚙️  Applying custom zsh configuration..."
