@@ -1,3 +1,6 @@
+# PATH
+export PATH="$HOME/.local/bin:$PATH"
+
 # Personal aliases
 alias ll='ls -alF'
 alias la='ls -A'
