@@ -70,7 +70,26 @@ fi
 # Install Claude Code
 if ! command -v claude &> /dev/null; then
     echo "🤖 Installing Claude Code..."
-    TERM=dumb CI=true curl -fsSL https://claude.ai/install.sh | TERM=dumb CI=true bash
+    # Back up existing credentials before installer potentially overwrites them
+    if [ -f "$HOME/.claude/.credentials.json" ]; then
+        cp "$HOME/.claude/.credentials.json" /tmp/.claude-credentials-backup
+    fi
+    if [ -f "$HOME/.claude/.claude.json" ]; then
+        cp "$HOME/.claude/.claude.json" /tmp/.claude-json-backup
+    fi
+
+    # Install with output suppressed to avoid EBADF PTY errors in devcontainers
+    TERM=dumb CI=true curl -fsSL https://claude.ai/install.sh | TERM=dumb CI=true bash > /dev/null 2>&1
+
+    # Restore credentials that the installer may have overwritten
+    if [ -f /tmp/.claude-credentials-backup ]; then
+        cp /tmp/.claude-credentials-backup "$HOME/.claude/.credentials.json"
+        rm /tmp/.claude-credentials-backup
+    fi
+    if [ -f /tmp/.claude-json-backup ]; then
+        cp /tmp/.claude-json-backup "$HOME/.claude/.claude.json"
+        rm /tmp/.claude-json-backup
+    fi
 else
     echo "🤖 Claude Code already installed"
 fi
